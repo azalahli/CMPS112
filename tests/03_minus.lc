@@ -30,11 +30,46 @@ let SND   = \p     -> p FALSE
 -- do not modify text BEFORE this line
 --------------------------------------------------------------------------------
 
-let SKIP1 = undefined       -- (a)
-let DECR  = undefined       -- (b)
-let SUB   = undefined       -- (c)
-let ISZ   = undefined       -- (d)
-let EQL   = undefined       -- (e)
+let SKIP1 = \x y -> PAIR ((OR TRUE (FST y))) (x (SND y))       -- (a)
+--let DECR  = undefined       -- (b)
+--let SUB   = undefined       -- (c)
+--let ISZ   = undefined       -- (d)
+--let EQL   = undefined       -- (e)
+
+{-|
+eval skip1_false :
+INCR (PAIR FALSE ZERO)
+=d> (\n f x -> f (n f x)) ((\x y b -> (\b x y -> b x y) b x y) (\x y -> y) (\f x -> x))
+=b> (\n f x -> f (n f x)) ((\y b -> (\b x y -> b x y) b  (\x y -> y) y) (\f x -> x))
+=b> (\n f x -> f (n f x)) ((\b -> (\b x y -> b x y) b  (\x y -> y) (\f x -> x)))
+=b> (\n f x -> f (n f x)) ((\b -> (\x y -> b x y) (\x y -> y) (\f x -> x)))
+=b> (\n f x -> f (n f x)) ((\b -> (\y -> b (\x y -> y) y)  (\f x -> x)))
+=b> (\n f x -> f (n f x)) ((\b -> (b (\x y -> y) (\f x -> x))))
+=d> (\n f x -> f (n f x)) (\b -> (b (\x y -> y) (\f x -> x)))
+=a> (\n f x -> f (n f x)) (\b -> (b (\f x -> x) (\f x -> x)))
+=b> (\f x -> f ((\b -> (b (\f x -> x) (\f x -> x))) f x)) 
+=b> (\f x -> f (((f (\f x -> x) (\f x -> x))) x)) 
+=d> (\f x -> f ((f (\f x -> x) (\f x -> x)) x))
+
+eval skip1_false2:
+PAIR FALSE ZERO
+=~> (\b -> b (\x y -> y) (\f x -> x))
+--PAIR TRUE ZERO
+--  (\b -> b (\x y -> x) (\f x -> x)) 
+SKIP1 is supposed to skip first arguement of pair and increment the second
+
+  --=*> TRUE (INCR ZERO)
+  =~> PAIR TRUE ONE   --  PAIR TRUE ZERO
+-- SKIP1 (INCR (PAIR FALSE ZERO)) 2 args
+-- \1 2 (2 args) ->
+-- \x y -> y x flips args
+-- (PAIR FALSE ZERO) INCR
+
+
+======================================= IMPORTANT
+NEED AN ITE TO ENSURE SKIP1 FALSE WORKS
+=======================================
+-}
 
 --------------------------------------------------------------------------------
 -- do not modify text AFTER this line
