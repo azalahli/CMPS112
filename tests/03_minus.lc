@@ -31,7 +31,7 @@ let SND   = \p     -> p FALSE
 --------------------------------------------------------------------------------
 
 let SKIP1 = \x y -> ITE (FST y) (PAIR ((OR TRUE (FST y))) (x (SND y))) (PAIR ((OR TRUE (FST y))) ((SND y)))       -- (a)
---let DECR  = undefined       -- (b)
+let DECR  = \n -> SND (n ((SKIP1 INCR (PAIR FALSE ZERO))))       -- (b)
 --let SUB   = undefined       -- (c)
 --let ISZ   = undefined       -- (d)
 --let EQL   = undefined       -- (e)
