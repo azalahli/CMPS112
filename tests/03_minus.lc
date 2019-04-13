@@ -35,7 +35,7 @@ let DECR  = \n -> SND (n (SKIP1 INCR) (PAIR FALSE ZERO))      -- (b)
 let SUB   = \x y -> (y DECR) x      -- (c)
 let ISZ   = \x -> (x (\x -> FALSE) TRUE)        -- (d)
 let LTE   = \x y -> ISZ (SUB x y)
-let EQL   = \x y -> AND (LEQ x y) (LEQ y x)        -- (e)
+let EQL   = \x y -> AND (LTE x y) (LTE y x)        -- (e)
 
 {-|
 eval skip1_false :
